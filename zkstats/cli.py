@@ -60,11 +60,14 @@ def prove(model_path: str, data_path: str):
     print("Verification key path:", vk_path)
     print("SRS path:", srs_path)
 
-
 @click.command()
-def verify():
-    # TODO: Skip verify CLI in DataProvider for now. It's verified in `prove` already
-    raise NotImplementedError
+@click.argument('proof_path')
+@click.argument('settings_path')
+@click.argument('vk_path')
+@click.argument('srs_path')
+def verify(proof_path: str, settings_path: str, vk_path: str, srs_path: str):
+    verifier_verify(proof_path, settings_path, vk_path, srs_path)
+    # TODO: Skip verify CLI in DataProvider for now. It's verified in `prove` already.
 
 
 def main():
