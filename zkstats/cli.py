@@ -1,7 +1,9 @@
 import os
+import json
+
 import click
 
-from .core import prover_gen_proof, prover_setup, load_model, verifier_verify
+from .core import prover_gen_proof, prover_setup, load_model, verifier_verify, gen_data_commitment
 
 cwd = os.getcwd()
 # TODO: Should make this configurable
@@ -67,7 +69,17 @@ def prove(model_path: str, data_path: str):
 @click.argument('srs_path')
 def verify(proof_path: str, settings_path: str, vk_path: str, srs_path: str):
     verifier_verify(proof_path, settings_path, vk_path, srs_path)
-    # TODO: Skip verify CLI in DataProvider for now. It's verified in `prove` already.
+    # TODO: verify if result[0] is true
+
+
+@click.command()
+@click.argument('data_path')
+def commit(data_path: str):
+    """
+    Now we just assume the data is a list of floats. We should be able to
+    """
+    commitment = gen_data_commitment(data_path)
+    print("Commitment:", hex(commitment))
 
 
 def main():
@@ -77,6 +89,7 @@ def main():
 # Register commands
 cli.add_command(prove)
 cli.add_command(verify)
+cli.add_command(commit)
 
 
 if __name__ == "__main__":
